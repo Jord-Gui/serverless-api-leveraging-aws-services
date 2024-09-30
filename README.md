@@ -14,8 +14,8 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 * `npx cdk synth`   emits the synthesized CloudFormation template
 
 ## Steps to get this Production ready
-- Add testing
-- Add pipeline e.g. add a staging environment
+- Add unit and integration tests
+- Add cdk pipeline e.g. add a staging environment
 
 ## Improvements
 - Handle case where the same address is stored
