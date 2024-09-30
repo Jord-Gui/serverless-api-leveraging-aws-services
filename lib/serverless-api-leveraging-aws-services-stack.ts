@@ -14,7 +14,7 @@ export class ServerlessApiLeveragingAwsServicesStack extends Stack {
       removalPolicy: RemovalPolicy.DESTROY,
     });
 
-    const storeFunction = new Function(this, "StoreFunctionHandler", {
+    const storeAddressFunction = new Function(this, "StoreAddressFunctionHandler", {
       runtime: Runtime.NODEJS_20_X,
       code: Code.fromAsset("lambda"),
       handler: "storeAddress.handler",
@@ -23,10 +23,10 @@ export class ServerlessApiLeveragingAwsServicesStack extends Stack {
       }
     });
 
-    table.grantReadWriteData(storeFunction);
+    table.grantReadWriteData(storeAddressFunction);
 
     const api = new LambdaRestApi(this, "AddressApi", {
-      handler: storeFunction,
+      handler: storeAddressFunction,
       proxy: false,
     });
 
@@ -35,6 +35,6 @@ export class ServerlessApiLeveragingAwsServicesStack extends Stack {
     const user = users.addResource("{userID}");
     const addresses = user.addResource("addresses");
 
-    addresses.addMethod("POST", new LambdaIntegration(storeFunction));
+    addresses.addMethod("POST", new LambdaIntegration(storeAddressFunction));
   }
 }

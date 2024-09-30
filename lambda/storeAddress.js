@@ -30,7 +30,7 @@ exports.handler = async (event) => {
     catch (error) {
         return {
             statusCode: 500,
-            body: JSON.stringify({ message: 'Error saving address', error })
+            body: JSON.stringify({ message: 'Error saving address', error: error.message })
         };
     }
 };
