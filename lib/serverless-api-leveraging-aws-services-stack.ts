@@ -22,19 +22,29 @@ export class ServerlessApiLeveragingAwsServicesStack extends Stack {
         TABLE_NAME: table.tableName,
       }
     });
-
     table.grantReadWriteData(storeAddressFunction);
 
+    const retrieveAddressFunction = new Function(this, "RetrieveAddressFunctionHandler", {
+      runtime: Runtime.NODEJS_20_X,
+      code: Code.fromAsset("lambda"),
+      handler: "retrieveAddress.handler",
+      environment: {
+        TABLE_NAME: table.tableName,
+      }
+    })
+    table.grantReadData(retrieveAddressFunction);
+
     const api = new LambdaRestApi(this, "AddressApi", {
-      handler: storeAddressFunction,
+      handler: storeAddressFunction, // TODO: Add a default handler
       proxy: false,
     });
 
-    // Define /users/{userID}/addresses resource
+    // route /users/{userID}/addresses
     const users = api.root.addResource("users");
     const user = users.addResource("{userID}");
     const addresses = user.addResource("addresses");
 
     addresses.addMethod("POST", new LambdaIntegration(storeAddressFunction));
+    addresses.addMethod("GET", new LambdaIntegration(retrieveAddressFunction));
   }
 }
