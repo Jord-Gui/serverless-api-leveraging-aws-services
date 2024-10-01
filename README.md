@@ -17,7 +17,7 @@ To deploy this application, ensure you have the following installed:
 - [Node.js](https://nodejs.org/) (v20.x or later)
 - [AWS CLI](https://aws.amazon.com/cli/) (configured with credentials)
 - [AWS CDK](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html) (v2.x)
-  ```
+  ```bash
   npm install -g aws-cdk
   ```
   
@@ -29,14 +29,14 @@ First, clone this repository to your local machine.
 ### 2. Install Dependencies
 Use `npm` to install the required dependencies.
 
-```
+```bash
 npm install
 ```
 
 ### 3. Bootstrap your AWS environment
 Before deploying for the first time, bootstrap the CDK in your AWS account if necessary:
 
-```
+```bash
 cdk bootstrap
 ```
 
@@ -45,7 +45,7 @@ This command sets up resources needed for CDK deployments in your AWS account.
 ### 4. Deploy the stack
 To deploy the application:
 
-```
+```bash
 cdk deploy
 ```
 
@@ -56,37 +56,55 @@ Once the stack is deployed, you'll receive an API endpoint URL in the output.
 You can find the API key in the AWS Portal under API Gateway.
 You can use tools like [Postman](https://www.postman.com/) or [curl](https://curl.se/) to interact with the API.
 
-#### Example Requests
-Store an address for a given user:
-```
-curl -X POST "{API_URL}/users/{userID}/addresses" \
+#### Request Format
+```bash
+curl -X POST "{{API_URL}}/users/{{userID}}/addresses" \
 -H "Content-Type: application/json" \
--H "x-api-key: your-api-key" \
+-H "x-api-key: {{your-api-key}}" \
 -d '{
-        "street": "123 Chapel St",
-        "suburb": "South Yarra",
-        "postcode": "3141"
+        "street": "{{...}}",
+        "suburb": "{{...}}",
+        "postcode": "{{...}}"
     }'
 ```
 
-Retrieve addresses for a given user:
-```
-curl -X GET "{API_URL}/users/{userID}/addresses" \
+```bash
+curl -X GET "{{API_URL}}/users/{{userID}}/addresses?suburb={{...}}&postcode={{...}}" \
 -H "Content-Type: application/json" \
--H "x-api-key: your-api-key"
+-H "x-api-key: {{your-api-key}}"
 ```
 
-Retrieve addresses for a given user, filtering by suburb and postcode
-```
-curl -X GET "{API_URL}/users/{userID}/addresses?suburb=Melbourne&postcode=3000" \
+#### Example Requests
+Store an address for a given user:
+```bash
+curl -X POST "https://my.apiendpoint.com/users/123abc456/addresses" \
 -H "Content-Type: application/json" \
--H "x-api-key: your-api-key"
+-H "x-api-key: myapikeythatisverycool" \
+-d '{
+        "street": "123 Flinders St",
+        "suburb": "Melbourne",
+        "postcode": "3000"
+    }'
+```
+
+Retrieve all addresses for a given user:
+```bash
+curl -X GET "https://my.apiendpoint.com/users/123abc456/addresses" \
+-H "Content-Type: application/json" \
+-H "x-api-key: myapikeythatisverycool"
+```
+
+Retrieve addresses for a given user that are in the suburb of Melbourne
+```bash
+curl -X GET "https://my.apiendpoint.com/users/123abc456/addresses?suburb=Melbourne" \
+-H "Content-Type: application/json" \
+-H "x-api-key: myapikeythatisverycool"
 ```
 
 ### 6. Tear Down
 To clean up the resources created by the CDK:
 
-```
+```bash
 cdk destroy
 ```
 
