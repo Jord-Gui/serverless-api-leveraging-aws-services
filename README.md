@@ -1,20 +1,108 @@
 # Serverless API Leveraging AWS Services
 
-An API to store and retrieve addresses for a given user. You can filter addresses by suburb and postcode.
+This project demonstrates a serverless API for storing and retrieving addresses for a given user, built using AWS services. 
+The infrastructure is deployed using AWS Cloud Development Kit (CDK) with JavaScript/TypeScript.
 
-![serveless-aws-architecture-diagram](./public/serverless-aws.jpg)
-**Figure: An architecture diagram of the solution**
+## Features
+- **API Gateway**: Exposes HTTP endpoints for CRUD operations.
+- **Lambda Functions**: Handles requests and interacts with DynamoDB.
+- **DynamoDB**: Stores address data.
+
+![serverless-aws-architecture-diagram](./public/serverless-aws.jpg)
+
+**Figure: An architecture diagram of the project**
+
+## Prerequisites
+To deploy this application, ensure you have the following installed:
+- [Node.js](https://nodejs.org/) (v20.x or later)
+- [AWS CLI](https://aws.amazon.com/cli/) (configured with credentials)
+- [AWS CDK](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html) (v2.x)
+  ```
+  npm install -g aws-cdk
+  ```
+  
+## Deployment Instructions
+
+### 1. Clone the repository
+First, clone this repository to your local machine.
+
+### 2. Install Dependencies
+Use `npm` to install the required dependencies.
+
+```
+npm install
+```
+
+### 3. Bootstrap your AWS environment
+Before deploying for the first time, bootstrap the CDK in your AWS account if necessary:
+
+```
+cdk bootstrap
+```
+
+This command sets up resources needed for CDK deployments in your AWS account.
+
+### 4. Deploy the stack
+To deploy the application:
+
+```
+cdk deploy
+```
+
+This will create the required AWS resources: API Gateway, Lambda functions, and DynamoDB table.
+
+### 5. Test the API
+Once the stack is deployed, you'll receive an API endpoint URL in the output.
+You can find the API key in the AWS Portal under API Gateway.
+You can use tools like [Postman](https://www.postman.com/) or [curl](https://curl.se/) to interact with the API.
+
+#### Example Requests
+Store an address for a given user:
+```
+curl -X POST "{API_URL}/users/{userID}/addresses" \
+-H "Content-Type: application/json" \
+-H "x-api-key: your-api-key" \
+-d '{
+        "street": "123 Chapel St",
+        "suburb": "South Yarra",
+        "postcode": "3141"
+    }'
+```
+
+Retrieve addresses for a given user:
+```
+curl -X GET "{API_URL}/users/{userID}/addresses" \
+-H "Content-Type: application/json" \
+-H "x-api-key: your-api-key"
+```
+
+Retrieve addresses for a given user, filtering by suburb and postcode
+```
+curl -X GET "{API_URL}/users/{userID}/addresses?suburb=Melbourne&postcode=3000" \
+-H "Content-Type: application/json" \
+-H "x-api-key: your-api-key"
+```
+
+### 6. Tear Down
+To clean up the resources created by the CDK:
+
+```
+cdk destroy
+```
+
+## Project Structure
+- **lib/**: Contains the AWS CDK stack definitions.
+- **lambda/**: Contains Lambda function code.
+- **bin/**: Entry point for the CDK app.
+- **cdk.json**: CDK configuration file.
+- **package.json**: Node.js dependencies.
 
 ## Useful commands
-
 * `npm run build`   compile typescript to js
 * `npm run watch`   watch for changes and compile
-* `npx cdk deploy`  deploy this stack to your default AWS account/region
-* `npx cdk diff`    compare deployed stack with current state
-* `npx cdk synth`   emits the synthesized CloudFormation template
-
-## TODO
-- Update readme with steps on dev deployment
+* `cdk diff`    compare deployed stack with current state
+* `cdk synth`   emits the synthesized CloudFormation template
+* `cdk deploy`  deploy this stack to your default AWS account/region
 
 ## Steps to get this Production ready
 - Infrastructure - Add unit and integration tests
