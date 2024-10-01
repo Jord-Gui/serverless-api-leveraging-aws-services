@@ -8,7 +8,7 @@ export class ServerlessApiLeveragingAwsServicesStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    const table = new Table(this, "AddressesTable", {
+    const table = new Table(this, "AddressTable", {
       partitionKey: { name: "userID", type: AttributeType.STRING },
       sortKey: { name: "addressID", type: AttributeType.STRING },
       removalPolicy: RemovalPolicy.DESTROY,
