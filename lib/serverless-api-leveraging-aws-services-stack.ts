@@ -2,7 +2,7 @@ import { Stack, StackProps, RemovalPolicy } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { AttributeType, Table } from 'aws-cdk-lib/aws-dynamodb';
 import { Function, Runtime, Code} from 'aws-cdk-lib/aws-lambda';
-import { LambdaRestApi, LambdaIntegration } from 'aws-cdk-lib/aws-apigateway';
+import { LambdaRestApi, LambdaIntegration, UsagePlan } from 'aws-cdk-lib/aws-apigateway';
 
 export class ServerlessApiLeveragingAwsServicesStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -39,12 +39,29 @@ export class ServerlessApiLeveragingAwsServicesStack extends Stack {
       proxy: false,
     });
 
+    const apiKey = api.addApiKey("AddressApiKey");
+    const usagePlan = new UsagePlan(this, "AddressUsagePlan", {
+      name: "AddressUsagePlan",
+      apiStages: [{ api: api, stage: api.deploymentStage }],
+      throttle: {
+        rateLimit: 10,
+        burstLimit: 2,
+      }
+    });
+    usagePlan.addApiKey(apiKey);
+
     // route /users/{userID}/addresses
     const users = api.root.addResource("users");
     const user = users.addResource("{userID}");
     const addresses = user.addResource("addresses");
 
-    addresses.addMethod("POST", new LambdaIntegration(storeAddressFunction));
-    addresses.addMethod("GET", new LambdaIntegration(retrieveAddressFunction));
+    const storeAddressIntegration = new LambdaIntegration(storeAddressFunction);
+    addresses.addMethod("POST", storeAddressIntegration, {
+      apiKeyRequired: true,
+    });
+    const retrieveAddressIntegration = new LambdaIntegration(retrieveAddressFunction);
+    addresses.addMethod("GET", retrieveAddressIntegration, {
+      apiKeyRequired: true,
+    });
   }
 }
