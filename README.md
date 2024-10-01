@@ -3,6 +3,7 @@
 An API to store and retrieve addresses for a given user. You can filter addresses by suburb and postcode.
 
 ![serveless-aws-architecture-diagram](./public/serverless-aws.jpg)
+**Figure: An architecture diagram of the solution**
 
 ## Useful commands
 
