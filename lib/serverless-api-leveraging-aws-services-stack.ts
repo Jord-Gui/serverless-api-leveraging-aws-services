@@ -1,6 +1,6 @@
 import { Stack, StackProps, RemovalPolicy } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-import { AttributeType, Table } from 'aws-cdk-lib/aws-dynamodb';
+import { AttributeType, Table } from 'aws-cdk-lib/aws-dynamodb'; // TODO: Refactor this to use TableV2
 import { Function, Runtime, Code} from 'aws-cdk-lib/aws-lambda';
 import { LambdaRestApi, LambdaIntegration, UsagePlan } from 'aws-cdk-lib/aws-apigateway';
 

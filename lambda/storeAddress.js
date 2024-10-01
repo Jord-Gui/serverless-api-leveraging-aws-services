@@ -1,3 +1,4 @@
+// TODO: Could convert this into TypeScript and have it automatically built before deploying.
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
 const { DynamoDBDocumentClient, PutCommand } = require("@aws-sdk/lib-dynamodb")
 
@@ -7,7 +8,7 @@ const docClient = DynamoDBDocumentClient.from(client);
 exports.handler = async (event) => {
     const userID = event.pathParameters.userID;
     const addressID = new Date().toISOString();
-    const { street, suburb, postcode } = JSON.parse(event.body);
+    const { street, suburb, postcode } = JSON.parse(event.body); // TODO: Add input validation and sanitization
 
     const params = {
         TableName: process.env.TABLE_NAME,
@@ -21,6 +22,7 @@ exports.handler = async (event) => {
     };
 
     try {
+        // TODO: Handle duplicate addresses
         await docClient.send(new PutCommand(params));
         return {
             statusCode: 200,

@@ -1,3 +1,4 @@
+// TODO: Could convert this into TypeScript and have it automatically built before deploying.
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
 const { DynamoDBDocumentClient, QueryCommand } = require("@aws-sdk/lib-dynamodb");
 
@@ -27,7 +28,8 @@ exports.handler = async (event) => {
             addresses = addresses.filter(addr => addr.postcode === postcode);
         }
 
-        return { // TODO: Format return in human-readable format
+        return {
+            // TODO: Format return in human-readable format or based org requirements
             statusCode: 200,
             body: JSON.stringify(addresses.length > 0 ? addresses : { message: 'No addresses found' }),
         };
