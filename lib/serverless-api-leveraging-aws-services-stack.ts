@@ -35,7 +35,7 @@ export class ServerlessApiLeveragingAwsServicesStack extends Stack {
     table.grantReadData(retrieveAddressFunction);
 
     const api = new LambdaRestApi(this, "AddressApi", {
-      handler: storeAddressFunction, // TODO: Add a default handler
+      handler: retrieveAddressFunction, // TODO: Add a handler for the default path
       proxy: false,
     });
 
