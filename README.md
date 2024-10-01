@@ -1,8 +1,6 @@
-# Welcome to your CDK TypeScript project
+# Serverless API Leveraging AWS Services
 
-This is a blank project for CDK development with TypeScript.
-
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+An API to store and retrieve addresses for a given user. You can filter addresses by suburb and postcode.
 
 ![serveless-aws-architecture-diagram](./public/serverless-aws.jpg)
 
@@ -10,13 +8,11 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
 * `npm run build`   compile typescript to js
 * `npm run watch`   watch for changes and compile
-* `npm run test`    perform the jest unit tests
 * `npx cdk deploy`  deploy this stack to your default AWS account/region
 * `npx cdk diff`    compare deployed stack with current state
 * `npx cdk synth`   emits the synthesized CloudFormation template
 
 ## TODO
-- Add architecture diagram to readme
 - Update readme with steps on dev deployment
 
 ## Improvements (TODO: Move this to comments)
