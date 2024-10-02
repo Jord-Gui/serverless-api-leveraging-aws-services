@@ -6,9 +6,10 @@ const client = new DynamoDBClient();
 const docClient = DynamoDBDocumentClient.from(client);
 
 exports.handler = async (event) => {
+    // TODO: Add input validation and sanitization
     const userID = event.pathParameters.userID;
     const addressID = new Date().toISOString();
-    const { street, suburb, postcode } = JSON.parse(event.body); // TODO: Add input validation and sanitization
+    const { street, suburb, postcode } = JSON.parse(event.body);
 
     const params = {
         TableName: process.env.TABLE_NAME,

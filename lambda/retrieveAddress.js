@@ -6,9 +6,11 @@ const client = new DynamoDBClient();
 const docClient = DynamoDBDocumentClient.from(client);
 
 exports.handler = async (event) => {
+    // TODO: Add input validation and sanitization
     const userID = event.pathParameters.userID;
     const { suburb, postcode } = event.queryStringParameters || {};
 
+    // TODO: Filter the data in DynamoDB using FilterExpression before returning it
     const params = {
         TableName: process.env.TABLE_NAME,
         KeyConditionExpression: "userID = :userID",
@@ -18,9 +20,11 @@ exports.handler = async (event) => {
     };
 
     try {
+        // TODO: Consider pagination for when there are a lot of results
         const result = await docClient.send(new QueryCommand(params));
         let addresses = result.Items;
 
+        // TODO: Could extend this to handle more types of filters or sorts
         if (suburb) {
             addresses = addresses.filter(addr => addr.suburb === suburb);
         }
