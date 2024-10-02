@@ -12,6 +12,13 @@ The infrastructure is deployed using AWS Cloud Development Kit (CDK) with JavaSc
 
 **Figure: An architecture diagram of the project**
 
+## Project Structure
+- **lib/**: Contains the AWS CDK stack definitions.
+- **lambda/**: Contains Lambda function code.
+- **bin/**: Entry point for the CDK app.
+- **cdk.json**: CDK configuration file.
+- **package.json**: Node.js dependencies.
+
 ## Prerequisites
 To deploy this application, ensure you have the following installed:
 - [Node.js](https://nodejs.org/) (v20.x or later)
@@ -33,8 +40,12 @@ Use `npm` to install the required dependencies.
 npm install
 ```
 
-### 3. Bootstrap your AWS environment
-Before deploying for the first time, bootstrap the CDK in your AWS account if necessary:
+### 3. Configure your AWS environment
+In `bin/serverless-api-leveraging-aws-services.ts`, follow the comments to configure the AWS environment for 
+the CDK stack
+
+### 4. Bootstrap your AWS environment (if necessary)
+Before deploying for the first time, bootstrap the CDK in your AWS account:
 
 ```bash
 cdk bootstrap
@@ -42,16 +53,17 @@ cdk bootstrap
 
 This command sets up resources needed for CDK deployments in your AWS account.
 
-### 4. Deploy the stack
+### 5. Deploy the stack
 To deploy the application:
 
 ```bash
 cdk deploy
 ```
 
+When prompted, confirm the changes to proceed with deployment.
 This will create the required AWS resources: API Gateway, Lambda functions, and DynamoDB table.
 
-### 5. Test the API
+### 6. Test the API
 Once the stack is deployed, you'll receive an API endpoint URL in the output.
 You can find the API key in the AWS Portal under API Gateway.
 You can use tools like [Postman](https://www.postman.com/) or [curl](https://curl.se/) to interact with the API.
@@ -101,19 +113,12 @@ curl -X GET "https://my.apiendpoint.com/users/123abc456/addresses?suburb=Melbour
 -H "x-api-key: myapikeythatisverycool"
 ```
 
-### 6. Tear Down
+### 7. Teardown
 To clean up the resources created by the CDK:
 
 ```bash
 cdk destroy
 ```
-
-## Project Structure
-- **lib/**: Contains the AWS CDK stack definitions.
-- **lambda/**: Contains Lambda function code.
-- **bin/**: Entry point for the CDK app.
-- **cdk.json**: CDK configuration file.
-- **package.json**: Node.js dependencies.
 
 ## Useful commands
 * `npm run build`   compile typescript to js
@@ -130,7 +135,8 @@ cdk destroy
 - Infrastructure - Generate an OpenAPI spec and set up Swagger UI
 - DynamoDB - Change removal policy from DESTROY to RETAIN depending on company policy
 - DynamoDB - Add backup options to AddressTable e.g. pointInTimeRecovery
-- API Gateway - Usage Plan - Change throttle settings depending on user base
+- Lambda - Add logging and monitoring
+- API Gateway - Usage Plan - Change throttle settings + add quota limits based on expected traffic
 - API Gateway - Use AWS Secrets Manager to store the API key generated and set up key rotation
 - API Gateway - Add access logging
 - API Gateway - Add AWS WAF to protect against common attacks
